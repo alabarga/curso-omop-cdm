@@ -53,3 +53,8 @@ Al final de este curso, los participantes podrán:
 - [EHDEN academy](https://academy.ehden.eu/)
 - [OHDSI workshops](https://www.ohdsi.org/tutorial-workshops/)
 - [Atlas tutorials](https://www.youtube.com/playlist?list=PLpzbqK7kvfeUXjgnpNMFoff3PDOwv61lZ)
+
+### Requisitos técnicos
+
+Seguir las instrucciones de [INSTALL.md](INSTALL.md) para preparar el entorno de trabajo
+
