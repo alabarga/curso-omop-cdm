@@ -48,7 +48,7 @@ Al final de este curso, los participantes podrán:
 
 
 ### Recursos:
-- [Presentaciones del curso](https://github.com/alabarga/curso-omop-cdm/tree/main/slides)
+- [Presentaciones del curso](https://github.com/alabarga/curso-omop-cdm/tree/main/presentaciones)
 - [El Libro de OHDSI](https://ohdsi.github.io/TheBookOfOhdsi/)
 - [EHDEN academy](https://academy.ehden.eu/)
 - [OHDSI workshops](https://www.ohdsi.org/tutorial-workshops/)
