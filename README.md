@@ -54,6 +54,15 @@ Al final de este curso, los participantes podrán:
 - [OHDSI workshops](https://www.ohdsi.org/tutorial-workshops/)
 - [Atlas tutorials](https://www.youtube.com/playlist?list=PLpzbqK7kvfeUXjgnpNMFoff3PDOwv61lZ)
 
+### Enlaces
+- [OHDSI](https://www.ohdsi.org/)
+- [Athena](https://athena.ohdsi.org/)
+- [Atlas](https://atlas-demo.ohdsi.org/)
+- [Hades](https://ohdsi.github.io/Hades/)
+- [OHDSI studies](https://data.ohdsi.org/OhdsiStudies/)
+- [EHDEN portal](https://portal.ehden.eu/)
+- [DARWIN](https://www.darwin-eu.org/)
+
 ### Requisitos técnicos
 
 Seguir las instrucciones de [INSTALL.md](INSTALL.md) para preparar el entorno de trabajo
