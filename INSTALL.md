@@ -1,16 +1,17 @@
 ## Instalación
 
-### Requisitos
+### Requisitos software
 
-- Instalar [Python](https://www.python.org/downloads/)
 - Instalar [Java](https://www.java.com/en/download/help/download_options.html)
-- Instalar [docker](https://docs.docker.com/engine/install/)
-- Instalar [git](https://git-scm.com/) and [git-lfs](https://git-lfs.com/)
+- Instalar [R](https://cran.r-project.org/) and [R-Studio](https://posit.co/download/rstudio-desktop/)
+- Instalar [SQLite Browser](https://sqlitebrowser.org/)
+  
+### Instalación de herramientas OHDSI
 
-### Instalación de componentes básicos
+- Descargar [WhiteRabbit + Rabbit-in-a-Hat](https://github.com/OHDSI/WhiteRabbit/releases/download/v1.0.0/WhiteRabbit_v1.0.0.zip)
+- Descargar [Usagi](https://github.com/OHDSI/Usagi/releases/download/v1.4.3/Usagi_v1.4.3.jar)
 
-- Descargar [synthea](https://synthetichealth.github.io/synthea/) patient data generator: [synthea-with-dependencies.jar](https://github.com/synthetichealth/synthea/releases/download/master-branch-latest/synthea-with-dependencies.jar) o descargar [data.zip](https://github.com/alabarga/pybcn22-modern-data-stack/blob/main/synthea/data.zip)
-- Descargar los [vocabularios OMOP](https://b2drop.bsc.es/index.php/s/mMczQrtjBHLfmZo) 
-- Instalar [PostgreSQL](https://www.postgresql.org): `docker pull postgres` 
-  - Instalar [psql](https://www.timescale.com/blog/how-to-install-psql-on-mac-ubuntu-debian-windows/)
-  - Instalar a SQL client such as [PgAdmin](https://www.pgadmin.org/) or [DBeaver](https://dbeaver.io/) or [VSCode SQL tools](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools)
+### Datos
+- Descargar [datos de ejemplo]
+- Descargar [base de datos OMOP]
+
