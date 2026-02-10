@@ -1,6 +1,6 @@
 # Presentaciones
 
-- Introducción al modelo de datos OMOP-CDM
+- [Introducción al modelo de datos OMOP-CDM](https://github.com/alabarga/curso-omop-cdm/blob/main/presentaciones/omop_cdm_2026_sesion_1.pdf)
 - Vocabularios
 - Transformación a OMOP-CDM
 - Explotación de dato
