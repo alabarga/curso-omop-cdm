@@ -4,7 +4,7 @@
 
 - Instalar [Java](https://www.java.com/en/download/help/download_options.html)
 - Instalar [R](https://cran.r-project.org/) and [R-Studio](https://posit.co/download/rstudio-desktop/) (Opcional)
-- Instalr [DBT](https://docs.getdbt.com/docs/core/installation-overview) (Opcional, requires Python installation) 
+- Instalar [DBT](https://docs.getdbt.com/docs/core/installation-overview) (Opcional, requires Python installation) 
   
 ### Instalación de herramientas OHDSI
 
