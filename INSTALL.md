@@ -12,6 +12,6 @@
 
 ### Datos
 - Instalar [SQLite Browser](https://sqlitebrowser.org/)
-- Descargar [datos de ejemplo]
-- Descargar [base de datos OMOP]
+- Descargar [datos de ejemplo](https://github.com/alabarga/pybcn22-modern-data-stack/blob/main/synthea/data.zip)
+- Descargar [base de datos OMOP](https://github.com/OHDSI/EunomiaDatasets)
 
