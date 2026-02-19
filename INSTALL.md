@@ -12,6 +12,6 @@
 
 ### Datos
 - Instalar [SQLite Browser](https://sqlitebrowser.org/)
-- Descargar [datos de ejemplo](https://github.com/alabarga/pybcn22-modern-data-stack/blob/main/synthea/data.zip)
-- Descargar [base de datos OMOP](https://github.com/OHDSI/EunomiaDatasets)
+- Descargar [datos de ejemplo (Synthea)](https://synthetichealth.github.io/synthea-sample-data/downloads/latest/synthea_sample_data_csv_latest.zip)
+- Descargar [datos en formato OMOP-CDM (Eunomia)](https://github.com/OHDSI/EunomiaDatasets)
 
