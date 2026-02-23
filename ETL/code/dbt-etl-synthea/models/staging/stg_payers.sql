@@ -8,4 +8,4 @@ select
     STATE_HEADQUARTERED as state,
     ZIP,
     PHONE
-from {{ ref('synthea_payers') }}
+from {{ ref('payers') }}

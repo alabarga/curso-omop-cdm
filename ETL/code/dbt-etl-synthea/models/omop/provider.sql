@@ -10,7 +10,7 @@ with providers as (
         p.specialty_concept_id,
         p.specialty_source_value,
         cs.care_site_id
-    from {{ ref('providers') }} as p
+    from {{ ref('stg_providers') }} as p
     left join {{ ref('care_sites') }} as cs
       on p.organization_id = cs.organization_id
 )

@@ -10,7 +10,7 @@ with base as (
         p.latitude,
         p.longitude,
         p.county
-    from {{ ref('patients') }} as p
+    from {{ ref('stg_patients') }} as p
 ), dedup as (
     select distinct
         city,
@@ -52,5 +52,5 @@ join numbered as n
  and b.state_name = n.state_name
  and (b.zip is not distinct from n.zip)
  and (b.street_address is not distinct from n.street_address)
-left join {{ ref('states_map') }} as sm
+left join {{ ref('stg_states_map') }} as sm
   on n.state_name = sm.state_name

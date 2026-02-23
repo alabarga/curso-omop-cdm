@@ -6,6 +6,6 @@ select
     cast(null as int) as drug_concept_id,
     cast(null as int) as unit_concept_id,
     cast(null as real) as dose_value,
-    cast(null as date) as dose_era_start_date,
-    cast(null as date) as dose_era_end_date
+    date(null) as dose_era_start_date,
+    date(null) as dose_era_end_date
 where 1 = 0

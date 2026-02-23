@@ -9,7 +9,7 @@ model-paths:
 macro-paths:
   - macros
 seed-paths:
-  - seeds
+  - data
 
 models:
   dbt_synthea:
@@ -19,18 +19,20 @@ models:
       +materialized: table
       +tags: ['core']
     omop:
-      +schema: omop
+      +schema: cdm
       +materialized: table
       +tags: ['core']
 
 seeds:
   dbt_synthea:
+    +insert_batch_size: 25
     synthea:
-      +schema: synthea
       +column_types:
         CODE: TEXT
         REASONCODE: TEXT
-    vocab:
-      +schema: vocab
+    vocabularies:
+      +schema: cdm
+      # no schema due to sqlite
     reference:
-      +schema: reference
+      +schema: stg
+      # no schema due to sqlite

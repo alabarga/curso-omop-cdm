@@ -11,18 +11,18 @@ with source as (
         VALUE,
         UNITS,
         TYPE
-    from {{ ref('synthea_observations') }}
+    from {{ ref('observations') }}
 ), typed as (
     select
         PATIENT as patient_id,
         ENCOUNTER as encounter_id,
-        try_cast(DATE as timestamp) as observation_ts,
+        datetime(DATE) as observation_ts,
         lower(trim(CATEGORY)) as category,
         CODE as source_code,
         DESCRIPTION as source_description,
         trim(UNITS) as unit_source_value,
         trim(TYPE) as value_type,
-        try_cast(VALUE as double) as numeric_value,
+        cast(VALUE as double) as numeric_value,
         VALUE as value_source_value,
         VALUE as observation_value,
         'LOINC' as source_vocabulary_id
@@ -31,7 +31,7 @@ with source as (
 select
     patient_id,
     encounter_id,
-    cast(observation_ts as date) as observation_date,
+    date(observation_ts) as observation_date,
     observation_ts as observation_datetime,
     observation_ts,
     observation_ts as observation_start_ts,

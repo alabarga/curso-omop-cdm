@@ -8,10 +8,10 @@ with transitions as (
         pt.end_date,
         pt.payer_id,
         pay.name as plan_name
-    from {{ ref('payer_transitions') }} as pt
+    from {{ ref('stg_payer_transitions') }} as pt
     join {{ ref('patient_ids') }} as ids
       on pt.patient_id = ids.patient_id
-    left join {{ ref('payers') }} as pay
+    left join {{ ref('stg_payers') }} as pay
       on pt.payer_id = pay.payer_id
 )
 select

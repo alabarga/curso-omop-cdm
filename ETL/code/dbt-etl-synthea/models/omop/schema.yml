@@ -23,8 +23,9 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('person')
-              field: person_id
+              arguments:
+                to: ref('person')
+                field: person_id
 
   - name: visit_detail
     description: OMOP CDM v5.4 Visit Detail table.
@@ -38,13 +39,15 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('person')
-              field: person_id
+              arguments:
+                to: ref('person')
+                field: person_id
       - name: visit_occurrence_id
         data_tests:
           - relationships:
-              to: ref('visit_occurrence')
-              field: visit_occurrence_id
+              arguments:
+                to: ref('visit_occurrence')
+                field: visit_occurrence_id
 
   # Clinical event domain tables
   - name: condition_occurrence
@@ -58,23 +61,27 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('person')
-              field: person_id
+              arguments:
+                to: ref('person')
+                field: person_id
       - name: visit_occurrence_id
         data_tests:
           - relationships:
-              to: ref('visit_occurrence')
-              field: visit_occurrence_id
+              arguments:
+                to: ref('visit_occurrence')
+                field: visit_occurrence_id
       - name: visit_detail_id
         data_tests:
           - relationships:
-              to: ref('visit_detail')
-              field: visit_detail_id
+              arguments:
+                to: ref('visit_detail')
+                field: visit_detail_id
       - name: provider_id
         data_tests:
           - relationships:
-              to: ref('provider')
-              field: provider_id
+              arguments:
+                to: ref('provider')
+                field: provider_id
 
   - name: device_exposure
     description: OMOP CDM v5.4 Device Exposure table.
@@ -87,23 +94,27 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('person')
-              field: person_id
+              arguments:
+                to: ref('person')
+                field: person_id
       - name: visit_occurrence_id
         data_tests:
           - relationships:
-              to: ref('visit_occurrence')
-              field: visit_occurrence_id
+              arguments:
+                to: ref('visit_occurrence')
+                field: visit_occurrence_id
       - name: visit_detail_id
         data_tests:
           - relationships:
-              to: ref('visit_detail')
-              field: visit_detail_id
+              arguments:
+                to: ref('visit_detail')
+                field: visit_detail_id
       - name: provider_id
         data_tests:
           - relationships:
-              to: ref('provider')
-              field: provider_id
+              arguments:
+                to: ref('provider')
+                field: provider_id
 
   - name: drug_exposure
     description: OMOP CDM v5.4 Drug Exposure table.
@@ -116,23 +127,27 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('person')
-              field: person_id
+              arguments:
+                to: ref('person')
+                field: person_id
       - name: visit_occurrence_id
         data_tests:
           - relationships:
-              to: ref('visit_occurrence')
-              field: visit_occurrence_id
+              arguments:
+                to: ref('visit_occurrence')
+                field: visit_occurrence_id
       - name: visit_detail_id
         data_tests:
           - relationships:
-              to: ref('visit_detail')
-              field: visit_detail_id
+              arguments:
+                to: ref('visit_detail')
+                field: visit_detail_id
       - name: provider_id
         data_tests:
           - relationships:
-              to: ref('provider')
-              field: provider_id
+              arguments:
+                to: ref('provider')
+                field: provider_id
 
   - name: procedure_occurrence
     description: OMOP CDM v5.4 Procedure Occurrence table.
@@ -145,23 +160,27 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('person')
-              field: person_id
+              arguments:
+                to: ref('person')
+                field: person_id
       - name: visit_occurrence_id
         data_tests:
           - relationships:
-              to: ref('visit_occurrence')
-              field: visit_occurrence_id
+              arguments:
+                to: ref('visit_occurrence')
+                field: visit_occurrence_id
       - name: visit_detail_id
         data_tests:
           - relationships:
-              to: ref('visit_detail')
-              field: visit_detail_id
+              arguments:
+                to: ref('visit_detail')
+                field: visit_detail_id
       - name: provider_id
         data_tests:
           - relationships:
-              to: ref('provider')
-              field: provider_id
+              arguments:
+                to: ref('provider')
+                field: provider_id
 
   - name: measurement
     description: OMOP CDM v5.4 Measurement table.
@@ -174,23 +193,27 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('person')
-              field: person_id
+              arguments:
+                to: ref('person')
+                field: person_id
       - name: visit_occurrence_id
         data_tests:
           - relationships:
-              to: ref('visit_occurrence')
-              field: visit_occurrence_id
+              arguments:
+                to: ref('visit_occurrence')
+                field: visit_occurrence_id
       - name: visit_detail_id
         data_tests:
           - relationships:
-              to: ref('visit_detail')
-              field: visit_detail_id
+              arguments:
+                to: ref('visit_detail')
+                field: visit_detail_id
       - name: provider_id
         data_tests:
           - relationships:
-              to: ref('provider')
-              field: provider_id
+              arguments:
+                to: ref('provider')
+                field: provider_id
 
   - name: observation
     description: OMOP CDM v5.4 Observation table.
@@ -203,23 +226,27 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('person')
-              field: person_id
+              arguments:
+                to: ref('person')
+                field: person_id
       - name: visit_occurrence_id
         data_tests:
           - relationships:
-              to: ref('visit_occurrence')
-              field: visit_occurrence_id
+              arguments:
+                to: ref('visit_occurrence')
+                field: visit_occurrence_id
       - name: visit_detail_id
         data_tests:
           - relationships:
-              to: ref('visit_detail')
-              field: visit_detail_id
+              arguments:
+                to: ref('visit_detail')
+                field: visit_detail_id
       - name: provider_id
         data_tests:
           - relationships:
-              to: ref('provider')
-              field: provider_id
+              arguments:
+                to: ref('provider')
+                field: provider_id
 
   - name: observation_period
     description: OMOP CDM v5.4 Observation Period table.
@@ -232,8 +259,9 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('person')
-              field: person_id
+              arguments:
+                to: ref('person')
+                field: person_id
 
   - name: payer_plan_period
     description: OMOP CDM v5.4 Payer Plan Period table.
@@ -246,8 +274,9 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('person')
-              field: person_id
+              arguments:
+                to: ref('person')
+                field: person_id
 
   # Era tables
   - name: condition_era
@@ -261,8 +290,9 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('person')
-              field: person_id
+              arguments:
+                to: ref('person')
+                field: person_id
 
   - name: drug_era
     description: OMOP CDM v5.4 Drug Era table.
@@ -275,8 +305,9 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('person')
-              field: person_id
+              arguments:
+                to: ref('person')
+                field: person_id
 
   - name: dose_era
     description: OMOP CDM v5.4 Dose Era table (not populated in this tutorial).
@@ -313,8 +344,9 @@ models:
       - name: care_site_id
         data_tests:
           - relationships:
-              to: ref('care_site')
-              field: care_site_id
+              arguments:
+                to: ref('care_site')
+                field: care_site_id
 
   - name: death
     description: OMOP CDM v5.4 Death table; one row per deceased person.
@@ -339,8 +371,9 @@ models:
         description: Links to visit_occurrence for this tutorial implementation.
         data_tests:
           - relationships:
-              to: ref('visit_occurrence')
-              field: visit_occurrence_id
+              arguments:
+                to: ref('visit_occurrence')
+                field: visit_occurrence_id
 
   # Stubbed (empty) tables in this tutorial
   - name: note

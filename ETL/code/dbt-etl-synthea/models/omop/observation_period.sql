@@ -6,7 +6,7 @@ with base as (
         min(enc.encounter_start_date) as period_start,
         max(coalesce(enc.encounter_end_date, enc.encounter_start_date)) as period_end
     from {{ ref('patient_ids') }} as ids
-    join {{ ref('encounters') }} as enc
+    join {{ ref('stg_encounters') }} as enc
       on ids.patient_id = enc.patient_id
     group by ids.person_id
 )

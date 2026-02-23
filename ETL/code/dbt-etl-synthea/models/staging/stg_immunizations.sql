@@ -8,17 +8,17 @@ with source as (
         CODE,
         DESCRIPTION,
         BASE_COST
-    from {{ ref('synthea_immunizations') }}
+    from {{ ref('immunizations') }}
 )
 select
     PATIENT as patient_id,
     ENCOUNTER as encounter_id,
-    try_cast(DATE as date) as immunization_date,
-    try_cast(DATE as timestamp) as immunization_datetime,
+    date(DATE) as immunization_date,
+    datetime(DATE) as immunization_datetime,
     CODE as source_code,
     CODE as immunization_code,
     DESCRIPTION as source_description,
     DESCRIPTION as immunization_description,
-    try_cast(BASE_COST as double) as base_cost,
+    cast(BASE_COST as double) as base_cost,
     'CVX' as source_vocabulary_id
 from source

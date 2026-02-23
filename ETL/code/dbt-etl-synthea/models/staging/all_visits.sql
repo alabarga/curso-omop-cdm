@@ -7,14 +7,14 @@ with encounters as (
         lower(encounter_class) as encounter_class,
         encounter_start_date,
         coalesce(encounter_end_date, encounter_start_date) as encounter_end_date
-    from {{ ref('encounters') }}
+    from {{ ref('stg_encounters') }}
 ),
 ranked_inpatient as (
     select
         *,
         case
             when lag(encounter_end_date) over (partition by patient_id order by encounter_start_date) is null
-                or datediff('day', lag(encounter_end_date) over (partition by patient_id order by encounter_start_date), encounter_start_date) > 1
+                or (julianday(encounter_start_date) - julianday(lag(encounter_end_date) over (partition by patient_id order by encounter_start_date))) > 1
             then 1
             else 0
         end as new_stay

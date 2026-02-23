@@ -7,8 +7,8 @@ with ingredient_exposures as (
         de.drug_exposure_start_date as exposure_start_date,
         case
             when de.drug_exposure_end_date is not null then de.drug_exposure_end_date
-            when coalesce(de.days_supply, 0) > 0 then de.drug_exposure_start_date + cast(de.days_supply as integer) * interval '1 day'
-            else de.drug_exposure_start_date + interval '1 day'
+            when coalesce(de.days_supply, 0) > 0 then date(de.drug_exposure_start_date, '+' || cast(de.days_supply as integer) || ' days')
+            else date(de.drug_exposure_start_date, '+1 day')
         end as exposure_end_date
     from {{ ref('drug_exposure') }} as de
     join {{ ref('concept_ancestor') }} as ca
@@ -24,7 +24,7 @@ normalized as (
         person_id,
         ingredient_concept_id,
         exposure_start_date,
-        greatest(exposure_start_date, exposure_end_date) as exposure_end_date
+        max(exposure_start_date, exposure_end_date) as exposure_end_date
     from ingredient_exposures
 ),
 ordered as (
@@ -32,7 +32,7 @@ ordered as (
         *,
         case
             when lag(exposure_end_date) over (partition by person_id, ingredient_concept_id order by exposure_start_date, exposure_end_date) is null then 1
-            when datediff('day', lag(exposure_end_date) over (partition by person_id, ingredient_concept_id order by exposure_start_date, exposure_end_date), exposure_start_date) > 30 then 1
+            when (julianday(exposure_start_date) - julianday(lag(exposure_end_date) over (partition by person_id, ingredient_concept_id order by exposure_start_date, exposure_end_date))) > 30 then 1
             else 0
         end as new_era_flag
     from normalized
@@ -55,7 +55,7 @@ eras as (
         min(exposure_start_date) as drug_era_start_date,
         max(exposure_end_date) as drug_era_end_date,
         count(*) as drug_exposure_count,
-        sum(datediff('day', exposure_start_date, exposure_end_date)) as days_exposed
+        sum(cast(julianday(exposure_end_date) - julianday(exposure_start_date) as integer)) as days_exposed
     from era_assignment
     group by person_id, ingredient_concept_id, era_group
 )
@@ -66,5 +66,5 @@ select
     drug_era_start_date,
     drug_era_end_date,
     drug_exposure_count,
-    greatest(datediff('day', drug_era_start_date, drug_era_end_date) - days_exposed, 0) as gap_days
+    max(cast(julianday(drug_era_end_date) - julianday(drug_era_start_date) as integer) - days_exposed, 0) as gap_days
 from eras

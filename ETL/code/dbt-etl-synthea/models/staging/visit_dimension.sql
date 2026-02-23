@@ -29,9 +29,9 @@ visit_members as (
             order by e.encounter_start_datetime, e.encounter_id
         ) as member_rank
     from {{ ref('final_visit_ids') }} as f
-    join {{ ref('encounters') }} as e
+    join {{ ref('stg_encounters') }} as e
       on f.encounter_id = e.encounter_id
-    left join {{ ref('providers') }} as prov
+    left join {{ ref('stg_providers') }} as prov
       on e.provider_source_value = prov.provider_source_value
 ),
 canonical_member as (
@@ -68,11 +68,11 @@ select
     person_id,
     encounter_class,
     visit_start_date as encounter_start_date,
-    coalesce(encounter_start_datetime, cast(visit_start_date as timestamp)) as encounter_start_datetime,
-    coalesce(encounter_start_datetime, cast(visit_start_date as timestamp)) as encounter_start_ts,
+    coalesce(encounter_start_datetime, datetime(visit_start_date)) as encounter_start_datetime,
+    coalesce(encounter_start_datetime, datetime(visit_start_date)) as encounter_start_ts,
     visit_end_date as encounter_end_date,
-    coalesce(encounter_end_datetime, cast(visit_end_date as timestamp)) as encounter_end_datetime,
-    coalesce(encounter_end_datetime, cast(visit_end_date as timestamp)) as encounter_end_ts,
+    coalesce(encounter_end_datetime, datetime(visit_end_date)) as encounter_end_datetime,
+    coalesce(encounter_end_datetime, datetime(visit_end_date)) as encounter_end_ts,
     source_code,
     source_code as encounter_code,
     source_vocabulary_id,

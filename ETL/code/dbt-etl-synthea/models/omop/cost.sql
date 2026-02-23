@@ -3,11 +3,11 @@
 with visit_costs as (
     select
         v.visit_occurrence_id,
-        try_cast(e.base_cost as double) as base_cost,
-        try_cast(e.total_cost as double) as total_cost,
-        try_cast(e.payer_coverage as double) as payer_coverage,
+        cast(e.base_cost as double) as base_cost,
+        cast(e.total_cost as double) as total_cost,
+        cast(e.payer_coverage as double) as payer_coverage,
         e.patient_id
-    from {{ ref('encounters') }} as e
+    from {{ ref('stg_encounters') }} as e
     join {{ ref('final_visit_ids') }} as v
       on e.encounter_id = v.encounter_id
 )

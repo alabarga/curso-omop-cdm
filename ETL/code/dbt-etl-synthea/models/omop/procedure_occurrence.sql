@@ -4,8 +4,8 @@ with encounter_providers as (
     select
         encounter_id,
         prov.provider_id
-    from {{ ref('encounters') }} as e
-    left join {{ ref('providers') }} as prov
+    from {{ ref('stg_encounters') }} as e
+    left join {{ ref('stg_providers') }} as prov
         on e.provider_source_value = prov.provider_source_value
 ),
 base as (
@@ -21,7 +21,7 @@ base as (
         std_map.target_concept_id,
         src_map.source_concept_id,
         prov.provider_id
-    from {{ ref('procedures') }} as proc
+    from {{ ref('stg_procedures') }} as proc
     join {{ ref('patient_ids') }} as ids
       on proc.patient_id = ids.patient_id
     left join {{ ref('source_to_standard_map') }} as std_map
@@ -42,9 +42,9 @@ select
     person_id,
     coalesce(target_concept_id, 0) as procedure_concept_id,
     procedure_date,
-    try_cast(procedure_datetime as timestamp) as procedure_datetime,
+    datetime(procedure_datetime) as procedure_datetime,
     coalesce(procedure_end_date, procedure_date) as procedure_end_date,
-    try_cast(coalesce(procedure_end_datetime, procedure_datetime) as timestamp) as procedure_end_datetime,
+    datetime(coalesce(procedure_end_datetime, procedure_datetime)) as procedure_end_datetime,
     32827 as procedure_type_concept_id,
     0 as modifier_concept_id,
     cast(null as integer) as quantity,

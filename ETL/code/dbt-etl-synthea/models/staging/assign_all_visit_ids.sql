@@ -7,7 +7,7 @@ with encounters as (
         lower(encounter_class) as encounter_class,
         encounter_start_date,
         coalesce(encounter_end_date, encounter_start_date) as encounter_end_date
-    from {{ ref('encounters') }}
+    from {{ ref('stg_encounters') }}
 ),
 candidate_visits as (
     select

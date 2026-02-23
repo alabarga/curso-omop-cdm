@@ -4,8 +4,8 @@ with encounter_providers as (
     select
         encounter_id,
         prov.provider_id
-    from {{ ref('encounters') }} as e
-    left join {{ ref('providers') }} as prov
+    from {{ ref('stg_encounters') }} as e
+    left join {{ ref('stg_providers') }} as prov
         on e.provider_source_value = prov.provider_source_value
 ),
 medication_base as (
@@ -22,9 +22,9 @@ medication_base as (
         std_map.target_concept_id,
         std_map.source_concept_id,
         'medication' as record_type,
-        coalesce(datediff('day', meds.drug_exposure_start_date, meds.drug_exposure_end_date), 0) as days_supply,
+        coalesce(cast(julianday(meds.drug_exposure_end_date) - julianday(meds.drug_exposure_start_date) as integer), 0) as days_supply,
         prov.provider_id
-    from {{ ref('medications') }} as meds
+    from {{ ref('stg_medications') }} as meds
     join {{ ref('patient_ids') }} as ids
       on meds.patient_id = ids.patient_id
     left join {{ ref('source_to_standard_map') }} as std_map
@@ -49,7 +49,7 @@ medication_base as (
         'immunization' as record_type,
         0 as days_supply,
         prov.provider_id
-    from {{ ref('immunizations') }} as imm
+    from {{ ref('stg_immunizations') }} as imm
     join {{ ref('patient_ids') }} as ids
       on imm.patient_id = ids.patient_id
     left join {{ ref('source_to_standard_map') }} as std_map
@@ -71,9 +71,9 @@ select
     person_id,
     coalesce(target_concept_id, 0) as drug_concept_id,
     drug_exposure_start_date,
-    try_cast(drug_exposure_start_datetime as timestamp) as drug_exposure_start_datetime,
+    datetime(drug_exposure_start_datetime) as drug_exposure_start_datetime,
     coalesce(drug_exposure_end_date, drug_exposure_start_date) as drug_exposure_end_date,
-    try_cast(coalesce(drug_exposure_end_datetime, drug_exposure_start_datetime) as timestamp) as drug_exposure_end_datetime,
+    datetime(coalesce(drug_exposure_end_datetime, drug_exposure_start_datetime)) as drug_exposure_end_datetime,
     case when record_type = 'medication'
          then coalesce(drug_exposure_end_date, drug_exposure_start_date)
          else drug_exposure_start_date

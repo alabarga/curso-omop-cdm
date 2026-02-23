@@ -4,8 +4,8 @@ with encounter_providers as (
     select
         encounter_id,
         prov.provider_id
-    from {{ ref('encounters') }} as e
-    left join {{ ref('providers') }} as prov
+    from {{ ref('stg_encounters') }} as e
+    left join {{ ref('stg_providers') }} as prov
         on e.provider_source_value = prov.provider_source_value
 ),
 base as (
@@ -22,7 +22,7 @@ base as (
         std_map.target_concept_id,
         src_map.source_concept_id,
         prov.provider_id
-    from {{ ref('devices') }} as dev
+    from {{ ref('stg_devices') }} as dev
     join {{ ref('patient_ids') }} as ids
       on dev.patient_id = ids.patient_id
     left join {{ ref('source_to_standard_map') }} as std_map
@@ -44,9 +44,9 @@ select
     person_id,
     coalesce(target_concept_id, 0) as device_concept_id,
     device_start_date as device_exposure_start_date,
-    try_cast(device_start_datetime as timestamp) as device_exposure_start_datetime,
+    datetime(device_start_datetime) as device_exposure_start_datetime,
     device_end_date as device_exposure_end_date,
-    try_cast(device_end_datetime as timestamp) as device_exposure_end_datetime,
+    datetime(device_end_datetime) as device_exposure_end_datetime,
     32827 as device_type_concept_id,
     unique_device_id,
     cast(null as text) as production_id,

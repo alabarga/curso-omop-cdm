@@ -4,15 +4,15 @@ with encounter_providers as (
     select
         encounter_id,
         prov.provider_id
-    from {{ ref('encounters') }} as e
-    left join {{ ref('providers') }} as prov
+    from {{ ref('stg_encounters') }} as e
+    left join {{ ref('stg_providers') }} as prov
         on e.provider_source_value = prov.provider_source_value
 ),
 observation_base as (
     select
         ids.person_id,
         obs.encounter_id,
-        cast(obs.observation_datetime as date) as measurement_date,
+        date(obs.observation_datetime) as measurement_date,
         obs.observation_datetime as measurement_datetime,
         obs.observation_code as source_code,
         obs.source_description,
@@ -25,7 +25,7 @@ observation_base as (
         value_map.target_concept_id as value_concept_id,
         prov.provider_id,
         'observation' as record_type
-    from {{ ref('observations') }} as obs
+    from {{ ref('stg_observations') }} as obs
     join {{ ref('patient_ids') }} as ids
       on obs.patient_id = ids.patient_id
     left join {{ ref('source_to_standard_map') }} as std_map
@@ -59,7 +59,7 @@ observation_base as (
         cast(null as integer) as value_concept_id,
         prov.provider_id,
         'procedure' as record_type
-    from {{ ref('procedures') }} as proc
+    from {{ ref('stg_procedures') }} as proc
     join {{ ref('patient_ids') }} as ids
       on proc.patient_id = ids.patient_id
     left join {{ ref('source_to_standard_map') }} as std_map
@@ -81,7 +81,7 @@ select
     person_id,
     coalesce(target_concept_id, 0) as measurement_concept_id,
     measurement_date,
-    try_cast(measurement_datetime as timestamp) as measurement_datetime,
+    datetime(measurement_datetime) as measurement_datetime,
     cast(null as time) as measurement_time,
     32827 as measurement_type_concept_id,
     cast(null as integer) as operator_concept_id,

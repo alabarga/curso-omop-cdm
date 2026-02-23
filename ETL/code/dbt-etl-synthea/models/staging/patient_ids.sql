@@ -4,5 +4,5 @@ select
     patient_id,
     row_number() over (order by patient_id) as person_id
 from (
-    select distinct patient_id from {{ ref('patients') }}
+    select distinct patient_id from {{ ref('stg_patients') }}
 )

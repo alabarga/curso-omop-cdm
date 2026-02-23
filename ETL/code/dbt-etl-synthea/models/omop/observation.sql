@@ -7,8 +7,8 @@ encounter_providers as (
     select
         encounter_id,
         prov.provider_id
-    from {{ ref('encounters') }} as e
-    left join {{ ref('providers') }} as prov
+    from {{ ref('stg_encounters') }} as e
+    left join {{ ref('stg_providers') }} as prov
         on e.provider_source_value = prov.provider_source_value
 ),
 allergy_obs as (
@@ -30,7 +30,7 @@ allergy_obs as (
         cast(null as text) as unit_source_value,
         cast(null as text) as qualifier_source_value,
         cast(null as text) as value_source_value
-    from {{ ref('allergies') }} as a
+    from {{ ref('stg_allergies') }} as a
     join {{ ref('patient_ids') }} as ids
       on a.patient_id = ids.patient_id
     left join {{ ref('source_to_standard_map') }} as std_map
@@ -47,7 +47,7 @@ condition_obs as (
     select
         ids.person_id,
         cond.encounter_id,
-        cast(cond.condition_start_datetime as date) as observation_date,
+        date(cond.condition_start_datetime) as observation_date,
         cond.condition_start_datetime as observation_datetime,
         std_map.target_concept_id as observation_concept_id,
         38000280 as observation_type_concept_id,
@@ -62,7 +62,7 @@ condition_obs as (
         cast(null as text) as unit_source_value,
         cast(null as text) as qualifier_source_value,
         cast(null as text) as value_source_value
-    from {{ ref('conditions') }} as cond
+    from {{ ref('stg_conditions') }} as cond
     join {{ ref('patient_ids') }} as ids
       on cond.patient_id = ids.patient_id
     left join {{ ref('source_to_standard_map') }} as std_map
@@ -79,12 +79,12 @@ clinical_obs as (
     select
         ids.person_id,
         obs.encounter_id,
-        cast(obs.observation_datetime as date) as observation_date,
+        date(obs.observation_datetime) as observation_date,
         obs.observation_datetime as observation_datetime,
         std_map.target_concept_id as observation_concept_id,
         38000280 as observation_type_concept_id,
         cast(null as double) as value_as_number,
-        left(obs.value_source_value, 50) as value_as_string,
+        substr(obs.value_source_value, 1, 50) as value_as_string,
         0 as value_as_concept_id,
         0 as qualifier_concept_id,
         0 as unit_concept_id,
@@ -93,8 +93,8 @@ clinical_obs as (
         coalesce(src_map.source_concept_id, 0) as observation_source_concept_id,
         obs.observation_units as unit_source_value,
         cast(null as text) as qualifier_source_value,
-        left(obs.value_source_value, 50) as value_source_value
-    from {{ ref('observations') }} as obs
+        substr(obs.value_source_value, 1, 50) as value_source_value
+    from {{ ref('stg_observations') }} as obs
     join {{ ref('patient_ids') }} as ids
       on obs.patient_id = ids.patient_id
     left join {{ ref('source_to_standard_map') }} as std_map
@@ -112,7 +112,7 @@ select
     person_id,
     coalesce(observation_concept_id, 0) as observation_concept_id,
     observation_date,
-    try_cast(observation_datetime as timestamp) as observation_datetime,
+    datetime(observation_datetime) as observation_datetime,
     observation_type_concept_id,
     value_as_number,
     value_as_string,

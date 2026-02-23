@@ -7,7 +7,7 @@ with base as (
         NAME as provider_name,
         upper(trim(GENDER)) as gender_source_value,
         SPECIALITY as specialty_source_value
-    from {{ ref('synthea_providers') }}
+    from {{ ref('providers') }}
 )
 select
     row_number() over (order by provider_source_value) as provider_id,

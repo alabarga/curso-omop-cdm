@@ -7,4 +7,4 @@ select
     city,
     state_name,
     zip
-from {{ ref('organizations') }}
+from {{ ref('stg_organizations') }}

@@ -7,7 +7,7 @@ with death_encounters as (
         e.encounter_start_datetime,
         e.reason_code,
         ids.person_id
-    from {{ ref('encounters') }} as e
+    from {{ ref('stg_encounters') }} as e
     join {{ ref('patient_ids') }} as ids
       on e.patient_id = ids.patient_id
     where e.encounter_code = '308646001'
@@ -26,7 +26,7 @@ causes as (
 select
     person_id,
     encounter_start_date as death_date,
-    try_cast(encounter_start_datetime as timestamp) as death_datetime,
+    datetime(encounter_start_datetime) as death_datetime,
     32817 as death_type_concept_id,
     coalesce(causes.target_concept_id, 0) as cause_concept_id,
     reason_code as cause_source_value,
