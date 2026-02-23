@@ -56,6 +56,7 @@ Al final de este curso, los participantes podrán:
 
 ### Enlaces
 - [OHDSI](https://www.ohdsi.org/)
+- [OMOP-CDM](https://ohdsi.github.io/CommonDataModel/)
 - [Athena](https://athena.ohdsi.org/)
 - [Atlas](https://atlas-demo.ohdsi.org/)
 - [Hades](https://ohdsi.github.io/Hades/)
