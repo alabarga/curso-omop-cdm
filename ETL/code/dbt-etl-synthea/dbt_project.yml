@@ -34,5 +34,4 @@ seeds:
       +schema: cdm
       # no schema due to sqlite
     reference:
-      +schema: stg
       # no schema due to sqlite
