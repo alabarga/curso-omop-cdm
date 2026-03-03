@@ -2,11 +2,11 @@
 
 with base as (
     select
-        Id as provider_source_value,
-        ORGANIZATION as organization_id,
-        NAME as provider_name,
-        upper(trim(GENDER)) as gender_source_value,
-        SPECIALITY as specialty_source_value
+        "Id" as provider_source_value,
+        "ORGANIZATION" as organization_id,
+        "NAME" as provider_name,
+        upper(trim("GENDER")) as gender_source_value,
+        "SPECIALITY" as specialty_source_value
     from {{ ref('providers') }}
 )
 select

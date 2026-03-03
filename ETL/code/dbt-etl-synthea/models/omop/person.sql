@@ -12,10 +12,10 @@ select
         when 'FEMALE' then 8532
         else 0
     end as gender_concept_id,
-    cast(strftime('%Y', p.birth_date) as integer) as year_of_birth,
-    cast(strftime('%m', p.birth_date) as integer) as month_of_birth,
-    cast(strftime('%d', p.birth_date) as integer) as day_of_birth,
-    datetime(p.birth_date) as birth_datetime,
+    cast(extract(year from p.birth_date) as integer) as year_of_birth,
+    cast(extract(month from p.birth_date) as integer) as month_of_birth,
+    cast(extract(day from p.birth_date) as integer) as day_of_birth,
+    cast(p.birth_date as timestamp) as birth_datetime,
     case upper(p.race_source_value)
         when 'WHITE' then 8527
         when 'BLACK' then 8516

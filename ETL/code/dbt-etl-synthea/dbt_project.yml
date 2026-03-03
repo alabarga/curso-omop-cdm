@@ -27,11 +27,18 @@ seeds:
   dbt_synthea:
     +insert_batch_size: 25
     synthea:
+      +schema: raw
       +column_types:
         CODE: TEXT
         REASONCODE: TEXT
+        DIAGNOSIS1: TEXT
+        DIAGNOSIS2: TEXT
+        DIAGNOSIS3: TEXT
+        DIAGNOSIS4: TEXT
+        DIAGNOSIS5: TEXT
     vocabularies:
-      +schema: cdm
+      +schema: vocabularies
       # no schema due to sqlite
     reference:
+      +schema: raw
       # no schema due to sqlite

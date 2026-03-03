@@ -10,8 +10,8 @@ select
     cast(null as int) as note_nlp_concept_id,
     cast(null as int) as note_nlp_source_concept_id,
     cast(null as text) as nlp_system,
-    date(null) as nlp_date,
-    datetime(null) as nlp_datetime,
+    cast(null as date) as nlp_date,
+    cast(null as timestamp) as nlp_datetime,
     cast(null as text) as term_exists,
     cast(null as text) as term_temporal,
     cast(null as text) as term_modifiers

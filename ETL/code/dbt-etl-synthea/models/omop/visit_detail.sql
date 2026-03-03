@@ -41,9 +41,9 @@ select
         else 0
     end as visit_detail_concept_id,
     encounter_start_date as visit_detail_start_date,
-    datetime(encounter_start_datetime) as visit_detail_start_datetime,
+    cast(encounter_start_datetime as timestamp) as visit_detail_start_datetime,
     encounter_end_date as visit_detail_end_date,
-    datetime(encounter_end_datetime) as visit_detail_end_datetime,
+    cast(encounter_end_datetime as timestamp) as visit_detail_end_datetime,
     32827 as visit_detail_type_concept_id,
     provider_id,
     cast(null as integer) as care_site_id,

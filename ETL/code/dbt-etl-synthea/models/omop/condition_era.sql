@@ -6,8 +6,8 @@ with condition_events as (
         condition_concept_id,
         condition_start_date as event_start_date,
         case
-            when condition_end_date is not null then condition_end_date
-            else date(condition_start_date, '+1 day')
+            when condition_end_datetime is not null then condition_end_datetime
+            else cast(condition_end_datetime as date) + interval '1 day'
         end as event_end_date
     from {{ ref('condition_occurrence') }}
     where condition_concept_id <> 0
@@ -17,7 +17,7 @@ normalized as (
         person_id,
         condition_concept_id,
         event_start_date,
-        max(event_start_date, event_end_date) as event_end_date
+        greatest(cast(event_start_date as timestamp), cast(event_end_date as timestamp)) as event_end_date
     from condition_events
 ),
 ordered as (
@@ -25,7 +25,7 @@ ordered as (
         *,
         case
             when lag(event_end_date) over (partition by person_id, condition_concept_id order by event_start_date, event_end_date) is null then 1
-            when (julianday(event_start_date) - julianday(lag(event_end_date) over (partition by person_id, condition_concept_id order by event_start_date, event_end_date))) > 30 then 1
+            when (cast(event_start_date as date) - cast(lag(event_end_date) over (partition by person_id, condition_concept_id order by event_start_date, event_end_date) as date)) > 30 then 1
             else 0
         end as new_era_flag
     from normalized

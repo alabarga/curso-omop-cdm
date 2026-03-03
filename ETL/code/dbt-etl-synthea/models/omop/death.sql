@@ -26,7 +26,7 @@ causes as (
 select
     person_id,
     encounter_start_date as death_date,
-    datetime(encounter_start_datetime) as death_datetime,
+    cast(encounter_start_datetime as timestamp) as death_datetime,
     32817 as death_type_concept_id,
     coalesce(causes.target_concept_id, 0) as cause_concept_id,
     reason_code as cause_source_value,

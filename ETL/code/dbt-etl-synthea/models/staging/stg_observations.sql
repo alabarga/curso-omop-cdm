@@ -2,36 +2,39 @@
 
 with source as (
     select
-        DATE,
-        PATIENT,
-        ENCOUNTER,
-        CATEGORY,
-        CODE,
-        DESCRIPTION,
-        VALUE,
-        UNITS,
-        TYPE
+        "DATE",
+        "PATIENT",
+        "ENCOUNTER",
+        "CATEGORY",
+        "CODE",
+        "DESCRIPTION",
+        "VALUE",
+        "UNITS",
+        "TYPE"
     from {{ ref('observations') }}
 ), typed as (
     select
-        PATIENT as patient_id,
-        ENCOUNTER as encounter_id,
-        datetime(DATE) as observation_ts,
-        lower(trim(CATEGORY)) as category,
-        CODE as source_code,
-        DESCRIPTION as source_description,
-        trim(UNITS) as unit_source_value,
-        trim(TYPE) as value_type,
-        cast(VALUE as double) as numeric_value,
-        VALUE as value_source_value,
-        VALUE as observation_value,
+        "PATIENT" as patient_id,
+        "ENCOUNTER" as encounter_id,
+        cast("DATE" as timestamp) as observation_ts,
+        lower(trim("CATEGORY")) as category,
+        "CODE" as source_code,
+        "DESCRIPTION" as source_description,
+        trim("UNITS") as unit_source_value,
+        trim("TYPE") as value_type,
+        case 
+            when lower(trim("TYPE")) = 'numeric' then cast("VALUE" as float) 
+            else null 
+        end as numeric_value,
+        "VALUE" as value_source_value,
+        "VALUE" as observation_value,
         'LOINC' as source_vocabulary_id
     from source
 )
 select
     patient_id,
     encounter_id,
-    date(observation_ts) as observation_date,
+    cast(observation_ts as date) as observation_date,
     observation_ts as observation_datetime,
     observation_ts,
     observation_ts as observation_start_ts,

@@ -3,8 +3,8 @@
 select
     cast(null as bigint) as note_id,
     cast(null as bigint) as person_id,
-    date(null) as note_date,
-    datetime(null) as note_datetime,
+    cast(null as date) as note_date,
+    cast(null as timestamp) as note_datetime,
     cast(null as int) as note_type_concept_id,
     cast(null as int) as note_class_concept_id,
     cast(null as text) as note_title,

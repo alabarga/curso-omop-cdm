@@ -8,6 +8,6 @@ select
     cast(null as text) as value_as_string,
     cast(null as int) as value_as_concept_id,
     cast(null as real) as value_as_number,
-    date(null) as metadata_date,
-    datetime(null) as metadata_datetime
+    cast(null as date) as metadata_date,
+    cast(null as timestamp) as metadata_datetime
 where 1 = 0

@@ -22,7 +22,7 @@ medication_base as (
         std_map.target_concept_id,
         std_map.source_concept_id,
         'medication' as record_type,
-        coalesce(cast(julianday(meds.drug_exposure_end_date) - julianday(meds.drug_exposure_start_date) as integer), 0) as days_supply,
+        coalesce(cast(cast(meds.drug_exposure_end_date as date) - cast(meds.drug_exposure_start_date as date) as integer), 0) as days_supply,
         prov.provider_id
     from {{ ref('stg_medications') }} as meds
     join {{ ref('patient_ids') }} as ids
@@ -43,7 +43,7 @@ medication_base as (
         imm.immunization_datetime as drug_exposure_end_datetime,
         imm.immunization_code as source_code,
         imm.immunization_description as source_description,
-        cast(null as double) as quantity,
+        cast(null as float) as quantity,
         std_map.target_concept_id,
         std_map.source_concept_id,
         'immunization' as record_type,
@@ -71,9 +71,9 @@ select
     person_id,
     coalesce(target_concept_id, 0) as drug_concept_id,
     drug_exposure_start_date,
-    datetime(drug_exposure_start_datetime) as drug_exposure_start_datetime,
+    cast(drug_exposure_start_datetime as timestamp) as drug_exposure_start_datetime,
     coalesce(drug_exposure_end_date, drug_exposure_start_date) as drug_exposure_end_date,
-    datetime(coalesce(drug_exposure_end_datetime, drug_exposure_start_datetime)) as drug_exposure_end_datetime,
+    cast(coalesce(drug_exposure_end_datetime, drug_exposure_start_datetime) as timestamp) as drug_exposure_end_datetime,
     case when record_type = 'medication'
          then coalesce(drug_exposure_end_date, drug_exposure_start_date)
          else drug_exposure_start_date

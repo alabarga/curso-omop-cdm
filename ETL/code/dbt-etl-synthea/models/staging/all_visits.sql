@@ -14,7 +14,7 @@ ranked_inpatient as (
         *,
         case
             when lag(encounter_end_date) over (partition by patient_id order by encounter_start_date) is null
-                or (julianday(encounter_start_date) - julianday(lag(encounter_end_date) over (partition by patient_id order by encounter_start_date))) > 1
+                or (cast(encounter_start_date as date) - cast(lag(encounter_end_date) over (partition by patient_id order by encounter_start_date) as date)) > 1
             then 1
             else 0
         end as new_stay
