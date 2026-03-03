@@ -43,14 +43,14 @@ FROM -- Initial diagnosis of Acute Myocardial Infarction
 				AND rel.invalid_reason IS NULL
 			) conceptlist ON conceptlist.concept_id = condition_concept_id
 		INNER JOIN cdm.observation_period obs ON obs.person_id = condition.person_id
-			AND condition_era_start_date >= DATEADD(day, 180, observation_period_start_date)
-			AND condition_era_start_date <= DATEADD(day, - 360, observation_period_end_date)
+			AND condition_era_start_date >= (observation_period_start_date + INTERVAL '180 day')
+			AND condition_era_start_date <= (observation_period_end_date + (- 360) * INTERVAL '1 day')
 		) ranked_diagnosis
 	WHERE ranking = 1
 	) diagnosed
 LEFT JOIN cdm.death /* death within a year */
 	ON death.person_id = diagnosed.person_id
-	AND death.death_date <= DATEADD(day, 360, condition_era_start_date);
+	AND death.death_date <= (condition_era_start_date + INTERVAL '360 day');
 ```
 
 ## Input

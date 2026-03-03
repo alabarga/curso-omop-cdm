@@ -15,9 +15,9 @@ The following is a sample run of the query. The input parameters are highlighted
 
 ```sql
 SELECT COUNT(DISTINCT diagnosed.person_id) AS all_infarction_deaths,
-	ROUND(min(DATEDIFF(day, diagnosed.condition_era_start_date, death.death_date)) / 365, 1) AS min_years,
-	ROUND(max(DATEDIFF(day, diagnosed.condition_era_start_date, death.death_date)) / 365, 1) AS max_years,
-	ROUND(avg(DATEDIFF(day, diagnosed.condition_era_start_date, death.death_date)) / 365, 1) AS avg_years
+	ROUND(min((death.death_date - diagnosed.condition_era_start_date)) / 365, 1) AS min_years,
+	ROUND(max((death.death_date - diagnosed.condition_era_start_date)) / 365, 1) AS max_years,
+	ROUND(avg((death.death_date - diagnosed.condition_era_start_date)) / 365, 1) AS avg_years
 FROM -- Initial diagnosis of Acute Myocardial Infarction
 	(
 	SELECT DISTINCT person_id,
@@ -39,7 +39,7 @@ FROM -- Initial diagnosis of Acute Myocardial Infarction
 				AND rel.invalid_reason IS NULL
 			) conceptlist ON conceptlist.concept_id = condition_concept_id
 		INNER JOIN cdm.observation_period obs ON obs.person_id = condition.person_id
-			AND condition.condition_era_start_date >= DATEADD(day, 180, obs.observation_period_start_date)
+			AND condition.condition_era_start_date >= (obs.observation_period_start_date + INTERVAL '180 day')
 		) diagnosis_ranked
 	WHERE ranking = 1
 	) diagnosed

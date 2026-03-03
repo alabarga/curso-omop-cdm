@@ -14,13 +14,13 @@ This query is used to to provide summary statistics for drug era start dates (dr
 ```sql
 SELECT DISTINCT MIN(tt.start_date) OVER () AS min_date
 ,      MAX(tt.start_date) OVER () AS max_date
-,      DATEADD(day, (AVG(CAST(tt.start_date_num AS BIGINT)) OVER ()), tt.min_date) AS avg_date
-,      ROUND(STDEV(tt.start_date_num) OVER (), 0) AS STDEV_days
-,      DATEADD(day, MIN(CASE WHEN tt.order_nr < .25 * tt.population_size THEN 9999 ELSE tt.start_date_num END) over (), tt.min_date) AS percentile_25_date
-,      DATEADD(day, MIN(CASE WHEN tt.order_nr < .50 * tt.population_size THEN 9999 ELSE tt.start_date_num END) over (), tt.min_date) AS median_date
-,      DATEADD(day, MIN(CASE WHEN tt.order_nr < .75 * tt.population_size THEN 9999 ELSE tt.start_date_num END) over (), tt.min_date) AS percentile_75_date
+,      (tt.min_date + ((AVG(CAST(tt.start_date_num AS BIGINT)) OVER ())) * INTERVAL '1 day') AS avg_date
+,      ROUND(STDDEV(tt.start_date_num) OVER (), 0) AS STDEV_days
+,      (tt.min_date + (MIN(CASE WHEN tt.order_nr < .25 * tt.population_size THEN 9999 ELSE tt.start_date_num END) over ()) * INTERVAL '1 day') AS percentile_25_date
+,      (tt.min_date + (MIN(CASE WHEN tt.order_nr < .50 * tt.population_size THEN 9999 ELSE tt.start_date_num END) over ()) * INTERVAL '1 day') AS median_date
+,      (tt.min_date + (MIN(CASE WHEN tt.order_nr < .75 * tt.population_size THEN 9999 ELSE tt.start_date_num END) over ()) * INTERVAL '1 day') AS percentile_75_date
 FROM (
-       SELECT DATEDIFF(day, (MIN(t.drug_era_start_date) OVER()), t.drug_era_start_date) AS start_date_num
+       SELECT (t.drug_era_start_date - (MIN(t.drug_era_start_date) OVER())) AS start_date_num
        ,      t.drug_era_start_date AS start_date
        ,      MIN(t.drug_era_start_date) OVER() min_date
        ,      MAX(t.drug_era_start_date) OVER() max_date

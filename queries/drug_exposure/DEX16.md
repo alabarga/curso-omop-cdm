@@ -29,7 +29,7 @@ SELECT de.person_id,
        fu.concept_name,
 	   de.drug_era_start_date,
 	   de.drug_era_end_date,
-       DATEDIFF(d,de.drug_era_start_date,de.drug_era_end_date) AS treatment_length,
+       (de.drug_era_end_date - de.drug_era_start_date) AS treatment_length,
 	   fu.drug_exposure_start_date,
 	   fu.days_supply,
        SIGN(ISNULL(fu.days_supply,0)) has_days_supply
@@ -40,7 +40,7 @@ SELECT de.person_id,
    AND fu.drug_exposure_start_date <= de.drug_era_end_date
  WHERE de.drug_concept_id = 996416
    AND SIGN(ISNULL(fu.days_supply,0)) > 0
-   AND DATEDIFF(d,de.drug_era_start_date,de.drug_era_end_date) > 100   
+   AND (de.drug_era_end_date - de.drug_era_start_date) > 100   
 )
 SELECT concept_name          AS drug_name,
        COUNT(*)              AS number_of_eras,

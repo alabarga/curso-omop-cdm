@@ -32,7 +32,7 @@ INNER JOIN (
 		AND rel.invalid_reason IS NULL
 	) conceptlist ON conceptlist.concept_id = condition_concept_id
 WHERE pr.procedure_concept_id IN ( 2002382, 2002403, 2108452, 2108453, 2212660, 2212662, 3045142, 3048879, 36359239, 37586183)
-	AND procedure_date >= DATEADD(day, - 60, condition_era_start_date)
+	AND procedure_date >= (condition_era_start_date + (- 60) * INTERVAL '1 day')
 	AND procedure_date <= condition_era_start_date;
 ```
 

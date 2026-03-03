@@ -40,7 +40,7 @@ FROM (
 		FROM /* back pain and treatments over following 60 days */ (
 			SELECT era.person_id,
 				condition_era_start_date AS diag_date,
-				datediff(day, condition_era_start_date, condition_era_end_date) AS condition_days,
+				(condition_era_end_date - condition_era_start_date) AS condition_days,
 				ISNULL(drug, 0) AS drug,
 				ISNULL(surgery, 0) AS surgery,
 				ISNULL(pt, 0) AS pt
@@ -70,7 +70,7 @@ FROM (
 					AND concept_code IN ('22851', '20936', '22612', '22523', '22630', '22614*', '22842', '22632', '20930', '22524', '27130', '22525')
 				) surgery ON surgery.person_id = era.person_id
 				AND surgery.procedure_date >= condition_era_start_date
-				AND surgery.procedure_date <= DATEADD(day, 60, condition_era_start_date)
+				AND surgery.procedure_date <= (condition_era_start_date + INTERVAL '60 day')
 			LEFT JOIN (
 				SELECT person_id,
 					procedure_date AS drug_date,
@@ -89,7 +89,7 @@ FROM (
 				WHERE drug_concept_id IN (1125315, 778711, 1115008, 1177480, 1112807, 1506270)
 				) drug ON drug.person_id = era.person_id
 				AND drug.drug_date >= condition_era_start_date
-				AND drug.drug_date <= DATEADD(day, 60, condition_era_start_date)
+				AND drug.drug_date <= (condition_era_start_date + INTERVAL '60 day')
 			LEFT JOIN (
 				SELECT person_id,
 					procedure_date AS pt_date,
@@ -110,7 +110,7 @@ FROM (
 					AND concept_code = 'G0283'
 				) pt ON pt.person_id = era.person_id
 				AND pt.pt_date >= condition_era_start_date
-				AND pt.pt_date <= DATEADD(day, 60, condition_era_start_date)
+				AND pt.pt_date <= (condition_era_start_date + INTERVAL '60 day')
 			) EV
 		WHERE diag_date > DATEFROMPARTS(2011, 01, 01)
 		GROUP BY person_id,

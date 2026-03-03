@@ -24,15 +24,15 @@ SELECT de.person_id, MIN(de.drug_exposure_start_date) AS index_date
     ON de.drug_concept_id = s.concept_id
  GROUP BY de.person_id
 )    
-SELECT FLOOR(1.0*DATEDIFF(d,su.index_date,op.observation_period_end_date)/365) AS follow_up_years,
+SELECT FLOOR(1.0*(op.observation_period_end_date - su.index_date)/365) AS follow_up_years,
        COUNT(*) AS persons
        /* statin users with 180 clean period and at least 1 year follow up period */
   FROM statin_users su
   JOIN cdm.observation_period op
     ON su.person_id  = op.person_id
- WHERE DATEADD(d,180,op.observation_period_start_date) < su.index_date
-   AND op.observation_period_end_date                  > DATEADD(d,365,su.index_date)
- GROUP BY FLOOR(1.0*DATEDIFF(d,su.index_date,op.observation_period_end_date)/365)
+ WHERE (op.observation_period_start_date + INTERVAL '180 day') < su.index_date
+   AND op.observation_period_end_date                  > (su.index_date + INTERVAL '365 day')
+ GROUP BY FLOOR(1.0*(op.observation_period_end_date - su.index_date)/365)
  ORDER BY 1;
 ```
 

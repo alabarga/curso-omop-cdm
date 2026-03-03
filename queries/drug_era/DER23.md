@@ -21,7 +21,7 @@ WITH drugs AS (
          SELECT t1.drug_concept_id
          ,      drug_era_start_date start_date
          ,      MIN(t1.drug_era_start_date) OVER(partition by t1.drug_concept_id) min_start_date
-         ,      DATEDIFF(day, MIN(t1.drug_era_start_date) OVER(PARTITION BY t1.drug_concept_id), t1.drug_era_start_date) AS start_date_num
+         ,      (t1.drug_era_start_date - MIN(t1.drug_era_start_date) OVER(PARTITION BY t1.drug_concept_id)) AS start_date_num
          FROM cdm.drug_era t1
          WHERE t1.drug_concept_id IN (SELECT drug_concept_id FROM drugs)
      ),
@@ -37,11 +37,11 @@ WITH drugs AS (
 SELECT tt.drug_concept_id
 ,      MIN(tt.start_date_num) AS min_value
 ,      MAX(tt.start_date_num) AS max_value
-,      DATEADD(day, AVG(CAST(tt.start_date_num AS BIGINT)), tt.min_date) AS avg_value
-,      ROUND(STDEV(tt.start_date_num), 0) AS STDEV_value
-,      DATEADD(day, MIN(CASE WHEN tt.order_nr < .25 * tt.population_size THEN 99999999 ELSE tt.start_date_num END), tt.min_date) AS percentile_25
-,      DATEADD(day, MIN(CASE WHEN tt.order_nr < .50 * tt.population_size THEN 99999999 ELSE tt.start_date_num END), tt.min_date) AS median_value
-,      DATEADD(day, MIN(CASE WHEN tt.order_nr < .75 * tt.population_size THEN 99999999 ELSE tt.start_date_num END), tt.min_date) AS percentile_75
+,      (tt.min_date + (AVG(CAST(tt.start_date_num AS BIGINT))) * INTERVAL '1 day') AS avg_value
+,      ROUND(STDDEV(tt.start_date_num), 0) AS STDEV_value
+,      (tt.min_date + (MIN(CASE WHEN tt.order_nr < .25 * tt.population_size THEN 99999999 ELSE tt.start_date_num END)) * INTERVAL '1 day') AS percentile_25
+,      (tt.min_date + (MIN(CASE WHEN tt.order_nr < .50 * tt.population_size THEN 99999999 ELSE tt.start_date_num END)) * INTERVAL '1 day') AS median_value
+,      (tt.min_date + (MIN(CASE WHEN tt.order_nr < .75 * tt.population_size THEN 99999999 ELSE tt.start_date_num END)) * INTERVAL '1 day') AS percentile_75
 FROM tt
 GROUP BY tt.drug_concept_id
 ,        tt.min_date

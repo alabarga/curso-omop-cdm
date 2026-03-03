@@ -28,7 +28,7 @@ SELECT days_supply, num_occurrences,
        MIN(days_supply)OVER() AS min_value,
        MAX(days_supply)OVER() AS max_value,
        ROUND(AVG(1.0*days_supply)OVER(),0) AS avg_value,    
-       ROUND(STDEV(days_supply)OVER(),0)   AS stdev_value
+       ROUND(STDDEV(days_supply)OVER(),0)   AS stdev_value
   FROM days_supply_freq
 )
 SELECT min_value,max_value,avg_value,stdev_value,

@@ -20,7 +20,7 @@ SELECT
     MIN(stat_value)                                                                    AS min_value,
     MAX(stat_value)                                                                    AS max_value,
     AVG(stat_value)                                                                    AS avg_value,
-    ROUND(STDEV(stat_value), 1)                                                        AS STDEV_value,
+    ROUND(STDDEV(stat_value), 1)                                                        AS STDEV_value,
     MIN(CASE WHEN order_nr < .25 * population_size THEN 9999 ELSE stat_value END)      AS percentile_25,
     MIN(CASE WHEN order_nr < .50 * population_size THEN 9999 ELSE stat_value END)      AS median_value,
     MIN(CASE WHEN order_nr < .75 * population_size THEN 9999 ELSE stat_value END)      AS percentile_75

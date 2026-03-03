@@ -21,7 +21,7 @@ The following is a sample run of the query. The input parameters are highlighted
 WITH drug_dates AS
   (
     SELECT
-        DATEDIFF(d,MIN(drug_exposure_start_date) OVER(partition BY drug_concept_id), drug_exposure_end_date) AS start_date_num,
+        (drug_exposure_end_date - MIN(drug_exposure_start_date) OVER(partition BY drug_concept_id)) AS start_date_num,
         drug_exposure_start_date                                                                             AS start_date,
         MIN(drug_exposure_start_date) OVER(partition BY drug_concept_id)                                     AS min_date,
         drug_concept_id                                                                                      AS drug_concept_id
@@ -32,11 +32,11 @@ SELECT
   ordered_data.drug_concept_id,
   min(start_date)                                                                                AS min_date,
   max(start_date)                                                                                AS max_date,
-  DATEADD(dd,avg(start_date_num),min_date)                                                       AS avg_date,
-  round(STDEV(start_date_num), 1)                                                                AS STDEV_days,
-  dateadd(day,MIN(CASE WHEN order_nr < .25 * population_size THEN 999999 ELSE start_date_num END),min_date) AS percentile_25_date,
-  dateadd(day,MIN(CASE WHEN order_nr < .50 * population_size THEN 999999 ELSE start_date_num END),min_date) AS median_date,
-  dateadd(day,MIN(CASE WHEN order_nr < .75 * population_size THEN 999999 ELSE start_date_num END),min_date) AS percentile_75_date
+  (min_date + (avg(start_date_num)) * INTERVAL '1 day')                                                       AS avg_date,
+  round(STDDEV(start_date_num), 1)                                                                AS STDEV_days,
+  (min_date + (MIN(CASE WHEN order_nr < .25 * population_size THEN 999999 ELSE start_date_num END)) * INTERVAL '1 day') AS percentile_25_date,
+  (min_date + (MIN(CASE WHEN order_nr < .50 * population_size THEN 999999 ELSE start_date_num END)) * INTERVAL '1 day') AS median_date,
+  (min_date + (MIN(CASE WHEN order_nr < .75 * population_size THEN 999999 ELSE start_date_num END)) * INTERVAL '1 day') AS percentile_75_date
 FROM
  ( SELECT
     drug_concept_id                                                               AS drug_concept_id,

@@ -28,8 +28,8 @@ INNER JOIN --  definition of Aplastic Anemia
 		AND rel.invalid_reason IS NULL
 	) conceptlist ON conceptlist.concept_id = condition_concept_id
 INNER JOIN cdm.measurement measurement ON measurement.person_id = condition.person_id
-	AND measurement_date >= DATEADD(day, - 7, condition_era_start_date)
-	AND measurement_date <= DATEADD(day, 7, condition_era_start_date)
+	AND measurement_date >= (condition_era_start_date + (- 7) * INTERVAL '1 day')
+	AND measurement_date <= (condition_era_start_date + INTERVAL '7 day')
 WHERE measurement_concept_id IN /* leukocytes #/volume in blood */ (3000905, 3003282, 3010813)
 	AND unit_concept_id = 8961 /* Thousand per cubic millimeter */
 	AND value_as_number <= 3.5;

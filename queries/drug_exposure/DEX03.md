@@ -33,7 +33,7 @@ SELECT
   MIN(CASE WHEN order_nr < .50 * population_size THEN 9999 ELSE age END) AS median,
   MIN(CASE WHEN order_nr < .75 * population_size THEN 9999 ELSE age END) AS percentile_75,
   max(age)                                                               AS max,
-  round(STDEV(age), 1)                                                   AS STDEV
+  round(STDDEV(age), 1)                                                   AS STDDEV
 FROM
  ( SELECT
     drug_concept_id,
